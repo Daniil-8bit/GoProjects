@@ -1,12 +1,8 @@
 package gadgets
 
-import (
-	"fmt"
+//import "github.com/Daniil-8bit/GoProjects/gadgetsMod"
 
-	"github.com/Daniil-8bit/GoProjects/gadgets"
-)
-
-func main() {
+/*func main() {
 	list := []string{"Song 1", "Song 2", "Song 3"}
 	device := gadgets.TapePlayer
 	playSongs(device, list)
@@ -17,4 +13,4 @@ func playSongs(gadget gadgets.TapePlayer, songs []string) {
 		fmt.Println(gadget.Play(elem))
 	}
 	gadget.Stop()
-}
+}*/

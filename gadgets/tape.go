@@ -30,7 +30,7 @@ func (tp TapePlayer) Stop() {
 	fmt.Println("Music stopped!")
 }
 
-func main() {
+/*func main() {
 	list := []string{"Song 1", "Song 2", "Song 3"}
 	device := TapePlayer{}
 	playSongs(device, list)
@@ -41,4 +41,4 @@ func playSongs(gadget TapePlayer, songs []string) {
 		gadget.Play(elem)
 	}
 	gadget.Stop()
-}
+}*/
