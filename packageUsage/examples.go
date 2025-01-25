@@ -11,6 +11,7 @@ import (
 	"github.com/Daniil-8bit/GoProjects/audiosystems"
 	"github.com/Daniil-8bit/GoProjects/readFile"
 	"github.com/Daniil-8bit/GoProjects/refrigerator"
+	"github.com/Daniil-8bit/GoProjects/webpage"
 )
 
 func main() {
@@ -21,9 +22,13 @@ func main() {
 	//checkRefrigerator()
 	//checkDir("C:\\Go\\go1.23.4\\src\\github.com\\Daniil-8bit\\GoProjects\\testDir")
 	//checkDirRecursion("C:\\Go\\go1.23.4\\src\\github.com\\Daniil-8bit\\GoProjects\\testDir")
-	defer stopPanic()
+	//defer stopPanic()
 	//panic("some other panic!")
-	checkDirRecursionPanic("C:\\")
+	//checkDirRecursionPanic("C:\\")
+
+	//checkWebPage()\
+	//checkWebPageCycle()
+	checkWebPageCycleStruct()
 }
 
 func TryInterface(player audiosystems.PlayDevice) {
@@ -152,5 +157,47 @@ func stopPanic() {
 		fmt.Println(err)
 	} else {
 		panic(res)
+	}
+}
+
+func checkWebPage() {
+
+	sizeChan := make(chan int)
+
+	go webpage.ReadWebPage("https://bpmsoft.ru", sizeChan)
+	go webpage.ReadWebPage("https://vk.com", sizeChan)
+	go webpage.ReadWebPage("https://www.google.com", sizeChan)
+
+	fmt.Println(<-sizeChan)
+	fmt.Println(<-sizeChan)
+	fmt.Println(<-sizeChan)
+}
+
+func checkWebPageCycle() {
+
+	sizeChan := make(chan int)
+	urls := []string{"https://bpmsoft.ru", "https://vk.com", "https://www.google.com"}
+
+	for _, url := range urls {
+		go webpage.ReadWebPage(url, sizeChan)
+	}
+
+	for i := 0; i < len(urls); i++ {
+		fmt.Println(<-sizeChan)
+	}
+}
+
+func checkWebPageCycleStruct() {
+
+	sizeChan := make(chan webpage.WebPage)
+	urls := []string{"https://bpmsoft.ru", "https://vk.com", "https://www.google.com"}
+
+	for _, url := range urls {
+		go webpage.ReadWebPageStruct(url, sizeChan)
+	}
+
+	for i := 0; i < len(urls); i++ {
+		page := <-sizeChan
+		fmt.Printf("Web page: %s, size: %d\n", page.Url, page.Size)
 	}
 }
