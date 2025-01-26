@@ -11,6 +11,7 @@ import (
 	"github.com/Daniil-8bit/GoProjects/audiosystems"
 	"github.com/Daniil-8bit/GoProjects/readFile"
 	"github.com/Daniil-8bit/GoProjects/refrigerator"
+	"github.com/Daniil-8bit/GoProjects/sentences"
 	"github.com/Daniil-8bit/GoProjects/webpage"
 )
 
@@ -28,7 +29,8 @@ func main() {
 
 	//checkWebPage()\
 	//checkWebPageCycle()
-	checkWebPageCycleStruct()
+	//checkWebPageCycleStruct()
+	checkConcat()
 }
 
 func TryInterface(player audiosystems.PlayDevice) {
@@ -200,4 +202,19 @@ func checkWebPageCycleStruct() {
 		page := <-sizeChan
 		fmt.Printf("Web page: %s, size: %d\n", page.Url, page.Size)
 	}
+}
+
+func checkConcat() {
+	sentence := []string{"first", "program", "it's ok!"}
+	finalLine := sentences.JoinSomeWords(sentence)
+	fmt.Println(finalLine)
+	sentence = []string{"second", "it's ok!"}
+	finalLine = sentences.JoinSomeWords(sentence)
+	fmt.Println(finalLine)
+	sentence = []string{"one", "two", "three", "four", "it's ok!"}
+	finalLine = sentences.JoinSomeWords(sentence)
+	fmt.Println(finalLine)
+	sentence = []string{"one"}
+	finalLine = "Number " + sentences.JoinSomeWords(sentence)
+	fmt.Println(finalLine)
 }
