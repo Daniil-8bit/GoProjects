@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Список гостей в отеле</title>
+        <link rel="stylesheet" href="C:/Go/go1.23.4/src/github.com/Daniil-8bit/GoProjects/hotel/styles.css">
+        <style>
+            table, th, td {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    <body>
+        <form>
+            <label for="guestName">Имя</label><br>
+            <input type="text" id="guestName" name="guestName" required><br>
+
+            <label for="guestEmail">Адрес электронной почты</label><br>
+            <input type="email" id="guestEmail" name="guestEmail" required><br>
+
+            <label for="checkInDate">Дата заезда:</label><br>
+            <input type="date" id="checkInDate" name="checkInDate" required><br>
+
+            <label for="checkOutDate">Дата выезда:</label><br>
+            <input type="date" id="checkOutDate" name="checkOutDate" required><br>
+
+            <button type="submit">Добавить гостя</button>
+        </form>
+
+        <div>
+            <h2>Список гостей:</h2>
+            <table id="guestList">
+                <tr>
+                    <th>Имя</th>
+                    <th>Электронная почта</th>
+                    <th>Дата заезда</th>
+                    <th>Дата выезда</th>
+                    <th>Действия</th>
+                </tr>
+                <tr>
+
+                </tr>
+            </table>
+        </div>
+
+        <script>
+            const guestForm = document.getElementById('guestForm');
+            const guestList = document.getElementById('guestList').getElementsByTagName('tbody')[0];
+
+            guestForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const name = event.target.guestName.value;
+                const email = event.target.guestEmail.value;
+                const checkIn = event.target.checkInDate.value;
+                const checkOut = event.target.checkOutDate.value;
+
+                const newRow = guestList.insertRow();
+                newRow.innerHTML = `
+                    <td>${name}</td>
+                    <td>${email}</td>
+                    <td>${checkIn}</td>
+                    <td>${checkOut}</td>
+                    <td><button onclick="deleteGuest(this)">Удалить</button></td>
+                `;
+
+                guestForm.reset();
+            });
+
+            function deleteGuest(button) {
+                const row = button.parentElement.parentElement;
+                guestList.deleteRow(row.rowIndex - 1);
+            }
+        </script>
+    </body>
+</html>

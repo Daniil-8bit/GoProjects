@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"io/ioutil"
 	"log"
 	"os"
@@ -9,6 +10,7 @@ import (
 
 	"github.com/Daniil-8bit/GoProjects/abstracts"
 	"github.com/Daniil-8bit/GoProjects/audiosystems"
+	"github.com/Daniil-8bit/GoProjects/hotel"
 	"github.com/Daniil-8bit/GoProjects/readFile"
 	"github.com/Daniil-8bit/GoProjects/refrigerator"
 	"github.com/Daniil-8bit/GoProjects/sentences"
@@ -33,8 +35,10 @@ func main() {
 	//checkWebPageCycleStruct()
 	//checkConcat()
 	//checkWebServer()
-	checkFirstClassFunc(tryFunc2, tryFunc4)
+	//checkFirstClassFunc(tryFunc2, tryFunc4)
 	//startServer()
+	checkHotelWeb()
+	//checkTemplates()
 }
 
 func TryInterface(player audiosystems.PlayDevice) {
@@ -260,3 +264,54 @@ func tryFunc4(num int) string {
 func pageHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Some information"))
 }*/
+
+func checkHotelWeb() {
+	hotel.StartServer()
+}
+
+func checkTemplates() {
+	text := "Start of template\nAction: {{.}}\nEnd of template\n"
+	tmpl, err := template.New("test").Parse(text)
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = tmpl.Execute(os.Stdout, "Value 1")
+	checkError(err)
+	err = tmpl.Execute(os.Stdout, 14)
+	checkError(err)
+	err = tmpl.Execute(os.Stdout, true)
+	checkError(err)
+
+	executeTemplate("start {{if .}} Dot is true! {{end}} finish\n", true)
+	executeTemplate("start {{if .}} Dot is true! {{end}} finish\n", false)
+
+	loopTemplate := "Before loop: {{.}}\n{{range .}}In loop: {{.}} \n{{end}}After loop: {{.}}\n"
+	executeTemplate(loopTemplate, []string{"apple", "peach", "pineapple"})
+	executeTemplate(loopTemplate, []int{13, 23, 77})
+
+	structTemplate := "Elements:\n{{range .}}name: {{.Name}} and amount: {{.Amount}}\n{{end}}\n"
+	elems := []Elem{
+		{Name: "One", Amount: 300},
+		{Name: "Two", Amount: 500},
+		{Name: "Three", Amount: 1500},
+	}
+	executeTemplate(structTemplate, elems)
+}
+
+func checkError(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func executeTemplate(text string, data interface{}) {
+	tmpl, err := template.New("test").Parse(text)
+	checkError(err)
+	err = tmpl.Execute(os.Stdout, data)
+	checkError(err)
+}
+
+type Elem struct {
+	Name   string
+	Amount int
+}
