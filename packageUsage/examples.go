@@ -13,6 +13,7 @@ import (
 	"github.com/Daniil-8bit/GoProjects/refrigerator"
 	"github.com/Daniil-8bit/GoProjects/sentences"
 	"github.com/Daniil-8bit/GoProjects/webpage"
+	"github.com/Daniil-8bit/GoProjects/webserver"
 )
 
 func main() {
@@ -30,7 +31,10 @@ func main() {
 	//checkWebPage()\
 	//checkWebPageCycle()
 	//checkWebPageCycleStruct()
-	checkConcat()
+	//checkConcat()
+	//checkWebServer()
+	checkFirstClassFunc(tryFunc2, tryFunc4)
+	//startServer()
 }
 
 func TryInterface(player audiosystems.PlayDevice) {
@@ -218,3 +222,41 @@ func checkConcat() {
 	finalLine = "Number " + sentences.JoinSomeWords(sentence)
 	fmt.Println(finalLine)
 }
+
+func checkWebServer() {
+	webserver.ActivateServer()
+}
+
+func checkFirstClassFunc(tf func(), tf1 func(int) string) {
+	var a func() = tryFunc1
+	a()
+	tf()
+	var b func(int, float64) string = tryFunc3
+	fmt.Println(b(13, 3.14))
+	fmt.Println(tf1(23))
+}
+
+func tryFunc1() {
+	fmt.Println("This is the function1 in variable!")
+}
+
+func tryFunc2() {
+	fmt.Println("This is the function2 in valiable!")
+}
+
+func tryFunc3(num int, num1 float64) string {
+	return fmt.Sprintf("Line of values: %d, %.2f\n", num, num1)
+}
+
+func tryFunc4(num int) string {
+	return fmt.Sprintf("Line of values: %d\n", num)
+}
+
+/*func startServer() {
+	http.HandleFunc("/", pageHandler)
+	http.ListenAndServe(":1313", nil)
+}
+
+func pageHandler(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Some information"))
+}*/
