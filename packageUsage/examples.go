@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"html/template"
 	"io/ioutil"
@@ -10,6 +11,7 @@ import (
 
 	"github.com/Daniil-8bit/GoProjects/abstracts"
 	"github.com/Daniil-8bit/GoProjects/audiosystems"
+	"github.com/Daniil-8bit/GoProjects/filework"
 	"github.com/Daniil-8bit/GoProjects/hotel"
 	"github.com/Daniil-8bit/GoProjects/readFile"
 	"github.com/Daniil-8bit/GoProjects/refrigerator"
@@ -37,8 +39,11 @@ func main() {
 	//checkWebServer()
 	//checkFirstClassFunc(tryFunc2, tryFunc4)
 	//startServer()
-	checkHotelWeb()
+	//checkHotelWeb()
 	//checkTemplates()
+	//checkWorkWithFile()
+
+	filework.Work()
 }
 
 func TryInterface(player audiosystems.PlayDevice) {
@@ -314,4 +319,49 @@ func executeTemplate(text string, data interface{}) {
 type Elem struct {
 	Name   string
 	Amount int
+}
+
+func checkWorkWithFile() {
+	// check read only file
+	readOnlyFile, err := os.OpenFile("testFile.txt", os.O_RDONLY, os.FileMode(0600))
+	checkError(err)
+
+	scanner := bufio.NewScanner(readOnlyFile)
+	for scanner.Scan() {
+		fmt.Println(scanner.Text())
+	}
+
+	// try to write in file: access is denied
+	/*_, err = readOnlyFile.Write([]byte("Try to write text"))
+	checkError(err)*/
+
+	err = readOnlyFile.Close()
+	checkError(err)
+	checkError(scanner.Err())
+
+	//check write only file (Doesn't add new info, rewrite text to file!)
+	writeOnlyFile, err := os.OpenFile("testFile.txt", os.O_WRONLY, os.FileMode(0600))
+	checkError(err)
+
+	//try to read file: access is denied
+	/*scanner = bufio.NewScanner(writeOnlyFile)
+	for scanner.Scan() {
+		fmt.Println(scanner.Text())
+	}*/
+
+	_, err = writeOnlyFile.Write([]byte("Some new text!\n"))
+	checkError(err)
+	err = writeOnlyFile.Close()
+	checkError(err)
+	checkError(scanner.Err())
+
+	//check append text to file
+	options := os.O_APPEND | os.O_CREATE
+
+	appendFile, err := os.OpenFile("testCreateFile.txt", options, os.FileMode(0600))
+	checkError(err)
+	_, err = appendFile.Write([]byte("Appended text!\n"))
+	checkError(err)
+	err = appendFile.Close()
+	checkError(err)
 }

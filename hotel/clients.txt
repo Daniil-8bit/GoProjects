@@ -2,12 +2,3 @@ Client first
 Client second
 Cliend third
 Ivan
-Даниил
-Mikle
-John
-John
-John
-John
-Ben
-Kyle
-Sam
