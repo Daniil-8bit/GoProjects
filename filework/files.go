@@ -10,7 +10,7 @@ import (
 )
 
 func Work() {
-	fmt.Printf("Welcome to our working with files app!\n\n")
+	fmt.Printf("\n***Welcome to our working with files app!***\n\n")
 
 	scanner := bufio.NewScanner(os.Stdin)
 
@@ -22,11 +22,11 @@ func Work() {
 		userNum, err := strconv.ParseInt(strings.TrimSpace(scanner.Text()), 10, 64)
 		checkError(err)
 
-		fmt.Println("Your choise: ", userNum)
+		//fmt.Println("Your choise: ", userNum)
 
 		switch userNum {
 		case 1:
-			fmt.Println("Write full path to your file:")
+			fmt.Println("Write full path to exists file or new file:")
 			scanner.Scan()
 			filePath := scanner.Text()
 			fmt.Println("Write text that you need to add:")
@@ -59,9 +59,9 @@ func readFileData(fileName string) []string {
 		lines = append(lines, scanner.Text())
 	}
 
-	fmt.Println("Data in file ", fileName, ":")
+	fmt.Printf("\nData in file %s:\n", fileName)
 	for i, val := range lines {
-		fmt.Println(i, ":", val)
+		fmt.Printf("%11d : %s\n", i+1, val)
 	}
 
 	checkError(scanner.Err())
@@ -89,5 +89,5 @@ func checkError(err error) {
 }
 
 func showMenu() {
-	fmt.Printf("\nMain menu\n\n1 - Add data to file\n2 - Show file data\n3 - Exit\n\n")
+	fmt.Printf("\n%27s\n\n%30s\n%28s\n%18s\n\n", "<<<Main menu>>>", "1 - Add data to file", "2 - Show file data", "3 - Exit")
 }

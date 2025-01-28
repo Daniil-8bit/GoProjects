@@ -1,6 +1,6 @@
 text4
 text5
 text6
-C://Go//go1.23.4//src//github.com//Daniil-8bit//GoProjects//filework//text.text
 Some text for files
 One more line!
+new line
