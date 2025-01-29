@@ -2,16 +2,19 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"html/template"
 	"io/ioutil"
 	"log"
+	"math/rand"
 	"os"
 	"path/filepath"
+	"time"
+	"unicode/utf8"
 
 	"github.com/Daniil-8bit/GoProjects/abstracts"
 	"github.com/Daniil-8bit/GoProjects/audiosystems"
-	"github.com/Daniil-8bit/GoProjects/filework"
 	"github.com/Daniil-8bit/GoProjects/hotel"
 	"github.com/Daniil-8bit/GoProjects/readFile"
 	"github.com/Daniil-8bit/GoProjects/refrigerator"
@@ -42,8 +45,17 @@ func main() {
 	//checkHotelWeb()
 	//checkTemplates()
 	//checkWorkWithFile()
+	//filework.Work()
+	//checkIfInit()
 
-	filework.Work()
+	channel := make(chan string, 3)
+	fmt.Println(time.Now())
+	go showGoroutineLetters(channel)
+	time.Sleep(time.Second * 5)
+	fmt.Println(<-channel, time.Now())
+	fmt.Println(<-channel, time.Now())
+	fmt.Println(<-channel, time.Now())
+	fmt.Println(time.Now())
 }
 
 func TryInterface(player audiosystems.PlayDevice) {
@@ -364,4 +376,69 @@ func checkWorkWithFile() {
 	checkError(err)
 	err = appendFile.Close()
 	checkError(err)
+}
+
+func checkIfInit() {
+	if err := testIfFunc("one"); err != nil {
+		fmt.Println("err != nil;", err)
+	}
+
+	if err := testIfFunc("TOO BIG LETTERS!"); err != nil {
+		fmt.Println("err != nil!", err)
+	}
+
+	switch rand.Intn(3) + 1 {
+	case 1:
+		fmt.Println("Gold!")
+	case 2:
+		fmt.Println("Silver!")
+	case 3:
+		fmt.Println("Bronze!")
+	default:
+		fmt.Println("Wood...")
+	}
+
+	var num8 int8 = 8
+	var num16 int16 = 16
+	var plusNum uint = 123
+	var plusNum8 uint8 = 077
+	var numFloat32 float32 = 345.123
+	fmt.Println(num8, num16, plusNum, plusNum8, numFloat32)
+
+	line1 := "ABCDE"
+	line2 := "АБВГД"
+
+	fmt.Println("Length eng in bytes:", len(line1))
+	fmt.Println("Length rus in bytes:", len(line2))
+
+	fmt.Println("Length eng in symbols: ", utf8.RuneCountInString(line1))
+	fmt.Println("Length rus in symbols: ", utf8.RuneCountInString(line2))
+
+	line1Bytes := []byte(line1)
+	partLine1 := line1Bytes[3:]
+	fmt.Println(string(partLine1))
+	line2Bytes := []byte(line2)
+	partLine2 := line2Bytes[3:]
+	fmt.Println(string(partLine2))
+
+	for i, val := range line1 {
+		fmt.Println(i, ":", string(val))
+	}
+
+	for i, val := range line2 {
+		fmt.Println(i, ":", string(val))
+	}
+}
+
+func testIfFunc(line string) error {
+	return errors.New("Error: " + line)
+}
+
+func showGoroutineLetters(channel chan string) {
+	channel <- "a"
+	time.Sleep(time.Second)
+	channel <- "b"
+	time.Sleep(time.Second)
+	channel <- "c"
+	time.Sleep(time.Second)
 }
